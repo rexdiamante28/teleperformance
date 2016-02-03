@@ -1,0 +1,31 @@
+﻿body {
+    padding-top: 50px;
+    padding-bottom: 20px;
+}
+
+/* Set padding to keep content from hitting the edges */
+.body-content {
+    padding-left: 15px;
+    padding-right: 15px;
+}
+
+/* Override the default bootstrap behavior where horizontal description lists 
+   will truncate terms that are too long to fit in the left column 
+*/
+.dl-horizontal dt {
+    white-space: normal;
+}
+
+.form-control{
+    border: 2px solid #e4e0e0;
+}
+.custom-fblue{
+    color: #3276B1;
+}
+.right-10{
+    margin-right: 10px;
+}
+.login{
+    max-width:400px;
+    margin: 0 auto;
+}
