@@ -322,6 +322,8 @@
     <Content Include="Content\Images\Website\New\img2.png" />
     <Content Include="Content\Images\Website\New\img3.png" />
     <Content Include="Content\Images\Website\New\img4.png" />
+    <Content Include="Content\Images\Website\tplogo.jpg" />
+    <Content Include="Content\Images\Website\tplogo.png" />
     <Content Include="Content\oldUser.css" />
     <Content Include="Content\User.css" />
     <Content Include="Content\custom.css" />
@@ -343,6 +345,7 @@
     <Content Include="Content\Images\Website\logo_white.png" />
     <Content Include="Content\Images\Website\Section4.png" />
     <Content Include="Content\old.css" />
+    <Content Include="Content\User1.css" />
     <Content Include="font-awesome\css\font-awesome.css" />
     <Content Include="font-awesome\css\font-awesome.min.css" />
     <Content Include="font-awesome\fonts\fontawesome-webfont.svg" />
@@ -424,6 +427,7 @@
     <Content Include="Scripts\respond.min.js" />
     <Content Include="Scripts\SideBar.js" />
     <Content Include="Scripts\User.js" />
+    <Content Include="Scripts\User1.js" />
     <Content Include="Views\Account\_ExternalLoginsListPartial.vbhtml" />
     <Content Include="Views\Account\ConfirmEmail.vbhtml" />
     <Content Include="Views\Account\ExternalLoginConfirmation.vbhtml" />
@@ -482,6 +486,8 @@
     <Content Include="Views\User\HealthProfile.vbhtml" />
     <Content Include="Views\User\Upload.vbhtml" />
     <Content Include="Views\User\Telemed2.vbhtml" />
+    <Content Include="Views\User\MobileTelemed.vbhtml" />
+    <Content Include="Views\Shared\_Empty.vbhtml" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="favicon.ico" />

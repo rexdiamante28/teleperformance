@@ -24,6 +24,12 @@ Public Module BundleConfig
                   "~/Scripts/User.js",
                   "~/Scripts/respond.js"))
 
+        bundles.Add(New ScriptBundle("~/bundles/user1").Include(
+                  "~/Scripts/bootstrap.js",
+                  "~/Scripts/User1.js",
+                  "~/Scripts/respond.js"))
+
+
         bundles.Add(New StyleBundle("~/Content/css").Include(
                   "~/Content/bootstrap.css",
                   "~/Content/site.css",
@@ -32,6 +38,12 @@ Public Module BundleConfig
         bundles.Add(New StyleBundle("~/Content/user").Include(
                   "~/Content/bootstrap.css",
                   "~/Content/User.css",
+                  "~/Content/custom.css",
+                  "~/font-awesome/css/font-awesome.css"))
+
+        bundles.Add(New StyleBundle("~/Content/user1").Include(
+                  "~/Content/bootstrap.css",
+                  "~/Content/User1.css",
                   "~/Content/custom.css",
                   "~/font-awesome/css/font-awesome.css"))
 

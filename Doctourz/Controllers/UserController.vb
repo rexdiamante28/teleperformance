@@ -167,6 +167,14 @@ Public Class UserController
         Return View()
     End Function
 
+    Function MobileTelemed() As ActionResult
+
+        ViewData("Room") = Request.QueryString("room")
+        'MsgBox(ViewData("Room"))
+
+        Return View()
+    End Function
+
     Function Search() As ActionResult
         Return View()
     End Function

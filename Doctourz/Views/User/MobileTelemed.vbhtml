@@ -1,6 +1,6 @@
 ﻿@Imports Microsoft.AspNet.Identity
 @Code
-    Layout = "../Shared/_UserLayout.vbhtml"
+    Layout = "../Shared/_UserLayoutBlank.vbhtml"
 
     Dim db = New ApplicationDbContext
     Dim appUser As String = User.Identity.GetUserName
@@ -9,10 +9,17 @@
 
     ViewData("Name") = name
     ViewData("Avatar") = avatar
+    
+    ViewBag.avatar() = avatar
+    ViewBag.name = name
+    
+  
 
 End Code
-<input id="txtName" type="hidden" value="@ViewData("Name")" />
-<input id="roomName" type="hidden" value="@ViewData("Room")" />
+<input id="txtName" class="hidden" type="text" value="@ViewBag.name" />
+<input id="roomName" class="hidden" type="text" value="@ViewData("Room")" />
+<img id="myAvatar" src="~/Images/@ViewBag.avatar" class="img-responsive img-circle hidden" style="margin:0 auto; max-width:100px; width: 90%;">
+
 
 <div id="acceptCallBox">
     <div id="acceptCallLabel"></div>
@@ -106,14 +113,13 @@ End Code
             </div>
         </div>
     </div>
+    <div id="onlineusers">
+    </div>
     <div id="controls">
         <div class="row">
             <div class="col-xs-12">
-                <div id="onlineusers">
-                    <i class="fa fa-users"></i>
-                </div>
                 <div id="controls-frame" class="text-center">
-                    <i class="fa fa-volume-down" onclick="countSubscriber()" style="margin-right:0px;" title="Adjust volume"></i>
+                    <i class="fa fa-volume-up" onclick="countSubscriber()" style="margin-right:0px;" title="Adjust volume"></i>
                     <input type="number" class="slider" ondrag="TestAlert('sdg')" value="" style="width:50px;margin-top:0px;" data-slider-min="0" data-slider-max="100" data-slider-step="1" data-slider-value="70" data-slider-orientation="horizontal" data-slider-selection="after" data-slider-tooltip="show">
                     <i id="endCall" class="fa fa-phone"></i>
                     <a id="videoControl" onclick="HideElement(this.id), ShowElement('videoControlSlashed')" title="Disable video"><i class="fa fa-video-camera"></i></a>
@@ -124,6 +130,7 @@ End Code
                     <a id="recordStop" onclick="HideElement(this.id), ShowElement('recordStart')" class="no-display" title="Stop recording"><i class="fa fa-play"></i></a>
                     <a id="selfVideo" onclick="HideElement(this.id), ShowElement('sefVideoHidden'), HideElement('myCamera')" class="" title="Enable audio"><i class="fa fa-compress" title="hide self video"></i></a>
                     <a id="sefVideoHidden" onclick="HideElement(this.id), ShowElement('selfVideo'), ShowElement('myCamera')" class="no-display" title="Enable audio"><i class="fa fa-expand" title="Show self video"></i></a>
+                    <i class="fa fa-users"></i>
                 </div>
             </div>
         </div>
@@ -197,8 +204,8 @@ End Code
             else {
                 a.css({ "width": "32%", "height": "35vh" });
                 $('#subscribers').css({ "width": "80%", "top": "120px", "left": "10%" });
-                $('#opentok_publisher').css({ "width": "170", "height": "120px" });
-                $('#myCamera').css({ "bottom": "20px", "left": "43.5%", "width": "178px" });
+                $('#opentok_publisher').css({ "width": "100%", "height": "100%" });
+                $('#myCamera').css({ "bottom": "0px", "left": "0px", "width": "100%", "height":"100%", "border":"0px" });
             }
             setTimeout(countSubscriber, 1000);
         }
@@ -208,8 +215,6 @@ End Code
         CompressInfo();
         CompressChat();
 
-        document.getElementById('topbar0').setAttribute("class", "bggray5");
-
 
         $(function () {
 
@@ -218,20 +223,22 @@ End Code
             var avatar = document.getElementById('myAvatar').getAttribute("src");
             var user;
 
+          
 
 
             var selfuser, caller;
 
-
             rtc.client.addNewMessageToPage = function (name, message, senderAvatar) {
+
                 // Add the message to the page.
+
                 var chat = document.getElementById('chat');
                 var chatStatus = chat.getAttribute("class");
 
                 if (chatStatus != "chat-open") {
                     $('#r2').css("color", "red");
                 }
-
+                
                 $('#chatbox').append("" +
                         '<div class="col-xs-12 bgwhite padd-10 top-10">' +
                             '<img src="' + senderAvatar + '"  class="img-circle chatAvatar" style="width:30px;"/>' +
@@ -295,7 +302,8 @@ End Code
                         // Call the Send method on the hub.
 
                         var myAvatar = document.getElementById('myAvatar').getAttribute("src");
-                        rtc.server.sendMessage($('#userFullName').html(), $('#chatMessage').val(), myAvatar, user.Opentok.SessionId);
+
+                        rtc.server.sendMessage($('#txtName').val(), $('#chatMessage').val(), myAvatar, user.Opentok.SessionId);
                         // Clear text box and reset focus for next comment.
                         $('#chatMessage').val('').focus();
                     });
