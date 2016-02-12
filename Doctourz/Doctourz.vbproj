@@ -214,6 +214,7 @@
     <Compile Include="App_Start\Startup.Auth.vb" />
     <Compile Include="Controllers\AccountController.vb" />
     <Compile Include="Controllers\ManageController.vb" />
+    <Compile Include="Controllers\MobileRTCHub.vb" />
     <Compile Include="Controllers\QuestionController.vb" />
     <Compile Include="Controllers\RTCHub.vb" />
     <Compile Include="Controllers\UserController.vb" />
@@ -419,6 +420,7 @@
     <Content Include="Scripts\jquery.validate.min.js" />
     <Content Include="Scripts\jquery.validate.unobtrusive.js" />
     <Content Include="Scripts\jquery.validate.unobtrusive.min.js" />
+    <Content Include="Scripts\mobiletalk.js" />
     <Content Include="Scripts\modernizr-2.8.3.js" />
     <Content Include="Scripts\opentok.min.js" />
     <Content Include="Scripts\opentok2.2.js" />
@@ -494,7 +496,9 @@
     <Content Include="Global.asax" />
     <Content Include="Scripts\jquery-2.1.4.min.map" />
     <Content Include="Scripts\respond.js" />
-    <Content Include="Web.config" />
+    <Content Include="Web.config">
+      <SubType>Designer</SubType>
+    </Content>
     <Content Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </Content>
@@ -513,6 +517,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
+    <Folder Include="Views\MobileRTCHub\" />
     <Folder Include="Views\_UserLayout\" />
   </ItemGroup>
   <ItemGroup>

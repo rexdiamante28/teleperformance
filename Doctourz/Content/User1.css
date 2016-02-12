@@ -732,7 +732,12 @@ table.dataTable thead .sorting:after {
     border-bottom: solid 2px #3FC02F;
 }
 
-
+#r3{
+    position:absolute;
+    right:10px;
+    top:15px;
+    font-size:11px !important;
+}
 
 #main-frame{
     width: 100%;
@@ -744,9 +749,9 @@ table.dataTable thead .sorting:after {
 #controls{
     position:absolute;
     height:45px;
-    width: 100%;
+    width: 80%;
+    left:10%;
     bottom:0px;
-    right:0px;
 }
 #video{
     min-height:100vh;
@@ -834,8 +839,9 @@ table.dataTable thead .sorting:after {
     padding:0px;
 }
 #chatbox{
-    max-height:60vh;
+    min-height:88vh !important;
     overflow-y:scroll;
+    max-height:88vh;
 }
 #controls{
     text-align:center;
@@ -845,8 +851,8 @@ table.dataTable thead .sorting:after {
     margin: 5px 10px 0px 10px;
 }
 #controls #controls-frame i, #onlineusers i{
-    margin-right: 10px;
-    font-size: 25px;
+    margin-right: 3px;
+    font-size: 23px;
     max-width:20px;
     margin-top:10px;
     color: #0079AC;
@@ -854,8 +860,16 @@ table.dataTable thead .sorting:after {
 }
 #onlineusers{
     position: absolute;
-    left:20px;
-    bottom:10px;
+    height:80vh;
+    max-height:80vh;
+    max-width:80%;
+    overflow-y:scroll;
+    background-color:rgba(250,250,250,.5);
+    width:80%;
+    z-index:99999;
+    top:10vh;
+    left:10%;
+    border-radius:10px;
 }
 #controls #controls-frame i:hover{
     color: #6089B3;
@@ -908,7 +922,6 @@ table.dataTable thead .sorting:after {
     bottom:50px;
     border: solid 4px white;
     width: 80px;
-    border-radius: 10px;
 }
 
 

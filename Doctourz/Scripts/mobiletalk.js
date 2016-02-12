@@ -32,7 +32,7 @@ var Opentok = {
             apiKey = openTok.ApiKey;
             token = openTok.Token;
 
-            session = OT.initSession(sessionId);    // Initialize session
+            session = OT.initSession(sessionId);	// Initialize session
             session.connect(apiKey, token);
             // Add event listeners to the session
 
@@ -117,27 +117,26 @@ var OnlineUsers = {
 
 
 
-        if (!document.getElementById("btn_" + user.ConnectionId)) {
-            var button = document.createElement("input");
-            var buttonContainer = document.getElementById("onlineusers");
+        if (!document.getElementById("li_" + user.ConnectionId)) {
 
-            theirAvatar = "background-image: url('" + user.Avatar + "')";
+            var li = document.createElement('li');
+            li.setAttribute("id",'li_'+user.ConnectionId);
+            var buttonContainer = document.getElementById("onlineList");
 
-            button.setAttribute("id", "btn_" + user.ConnectionId);
-            button.setAttribute("type", "button");
-            button.setAttribute("class", "onlineUserButton");
-            button.setAttribute("style", theirAvatar);
-            button.setAttribute("title", "Call " + user.Name);
-            button.setAttribute("onclick", "begincallsignal(this)");
-            buttonContainer.appendChild(button);
+
+            li.setAttribute("class","list-group-item");
+            li.innerHTML = '<img style="width:70px; border-radius:999999px;" src="'+user.Avatar+'"></img>'+
+                            '<text>' + user.Name + '</text>' +
+                            '<button onclick="begincallsignal(this);" class="btn btn-info btn-sm" id="btn_' + user.ConnectionId + '">Call</button>';
+            buttonContainer.appendChild(li);
 
         }
     }
 ,
     removeButton: function (user) {
 
-        var btn = document.getElementById("btn_" + user.ConnectionId)
-        var buttonContainer = document.getElementById("onlineusers");
+        var btn = document.getElementById("li_" + user.ConnectionId)
+        var buttonContainer = document.getElementById("onlineList");
 
         if (btn) {
             buttonContainer.removeChild(btn);
@@ -146,7 +145,7 @@ var OnlineUsers = {
     }
 ,
     removeAllButtons: function () {
-        var buttonContainer = document.getElementById("onlineusers");
+        var buttonContainer = document.getElementById("onlineList");
         buttonContainer.innerHTML = '';
     }
 }
@@ -156,6 +155,7 @@ var OnlineUsers = {
 function endCall(obj, label) {
     console.log(obj.value);
     obj.setAttribute("title", label);
+    obj.innerHTML = label
     obj.setAttribute("onclick", "begincallsignal(this)");
 
 }
@@ -177,8 +177,10 @@ function begincallsignal(obj) {
 
 
 function beginCall(obj) {
-    obj.setAttribute("onclick", "endcallsignal(this,'" + obj.title + "')");
+    obj.setAttribute("onclick", "endcallsignal(this,'Call')");
     obj.title = 'End call';
+    obj.innerHTML = "End Call"
+    
 
 }
 

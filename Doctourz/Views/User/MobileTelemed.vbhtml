@@ -16,6 +16,16 @@
   
 
 End Code
+
+<script>
+    var width = window.innerWidth;
+
+    if (width >= 768) {
+        window.location = "/User/telemed2?room=room1";
+    }
+
+</script>
+
 <input id="txtName" class="hidden" type="text" value="@ViewBag.name" />
 <input id="roomName" class="hidden" type="text" value="@ViewData("Room")" />
 <img id="myAvatar" src="~/Images/@ViewBag.avatar" class="img-responsive img-circle hidden" style="margin:0 auto; max-width:100px; width: 90%;">
@@ -94,13 +104,13 @@ End Code
                     <div class="col-xs-12">
                         <text id="r1" class="fwhite _13" style="margin-bottom:3px;"><i class="fa fa-comments"></i> CHAT</text>
                         <i id="r2" class="pull-left fa fa-comments fwhite opener" style="display:none;" onclick="ExpandChat()"></i>
-                        <i id="r3" class=" fa fa-minus fwhite" style="font-size:10px;margin-left:200px;" onclick="CompressChat()"></i>
+                        <i id="r3" class=" fa fa-minus fwhite"  onclick="CompressChat()"></i>
                     </div>
                 </div>
             </div>
             <div id="messaging-controls" class="messaging-controls">
             </div>
-            <div id="chatbox" class="padd-10" style="min-height:68vh;">
+            <div id="chatbox" class="padd-10">
 
             </div>
             <div id="message-box" class="list-group-item">
@@ -113,12 +123,19 @@ End Code
             </div>
         </div>
     </div>
-    <div id="onlineusers">
+
+    <div id="onlineusers" class="no-display">
+        <ul class="list-group" id="onlineList">
+            
+       </ul>
     </div>
+
     <div id="controls">
         <div class="row">
             <div class="col-xs-12">
                 <div id="controls-frame" class="text-center">
+                    <a id="onlineUsersShown" style="z-index:3333;" onclick="HideElement(this.id), ShowElement('onlineUsersHidden'), ShowElement('onlineusers')" class="" title="Show online users"><i class="fa fa-users" title="Show self video"></i></a>
+                    <a id="onlineUsersHidden" onclick="HideElement(this.id), ShowElement('onlineUsersShown'), HideElement('onlineusers')" class="no-display" title="Hide online users"><i class="fa fa-users" title="Show self video" style="color:gray;"></i></a>
                     <i class="fa fa-volume-up" onclick="countSubscriber()" style="margin-right:0px;" title="Adjust volume"></i>
                     <input type="number" class="slider" ondrag="TestAlert('sdg')" value="" style="width:50px;margin-top:0px;" data-slider-min="0" data-slider-max="100" data-slider-step="1" data-slider-value="70" data-slider-orientation="horizontal" data-slider-selection="after" data-slider-tooltip="show">
                     <i id="endCall" class="fa fa-phone"></i>
@@ -126,20 +143,24 @@ End Code
                     <a id="videoControlSlashed" class="no-display" onclick="HideElement(this.id), ShowElement('videoControl')" title="Enable video"><i class="fa fa-eye-slash"></i></a>
                     <a id="audioControl" onclick="HideElement(this.id), ShowElement('audioControlSlashed')"><i class="fa fa-microphone" title="Disable audio"></i></a>
                     <a id="audioControlSlashed" onclick="HideElement(this.id), ShowElement('audioControl')" class="no-display" title="Enable audio"><i class="fa fa-microphone-slash"></i></a>
-                    <a id="recordStart" onclick="HideElement(this.id), ShowElement('recordStop')" class="" title="Start recording"><i class="fa fa-stop"></i></a>
-                    <a id="recordStop" onclick="HideElement(this.id), ShowElement('recordStart')" class="no-display" title="Stop recording"><i class="fa fa-play"></i></a>
-                    <a id="selfVideo" onclick="HideElement(this.id), ShowElement('sefVideoHidden'), HideElement('myCamera')" class="" title="Enable audio"><i class="fa fa-compress" title="hide self video"></i></a>
-                    <a id="sefVideoHidden" onclick="HideElement(this.id), ShowElement('selfVideo'), ShowElement('myCamera')" class="no-display" title="Enable audio"><i class="fa fa-expand" title="Show self video"></i></a>
-                    <i class="fa fa-users"></i>
+                    <a id="recordStart" onclick="HideElement(this.id), ShowElement('recordStop')" class="" title="Start recording"><i class="fa fa-stop fred1"></i></a>
+                    <a id="recordStop" onclick="HideElement(this.id), ShowElement('recordStart')" class="no-display" title="Stop recording"><i class="fa fa-play fred1"></i></a>
+                    <a id="selfVideo" style="z-index:3333;" onclick="HideElement(this.id), ShowElement('sefVideoHidden'), HideElement('myCamera')" class="" title="Enable audio"><i class="fa fa-compress" title="hide self video"></i></a>
+                    <a id="sefVideoHidden" style="z-index:3333;" onclick="HideElement(this.id), ShowElement('selfVideo'), ShowElement('myCamera')" class="no-display" title="Enable audio"><i class="fa fa-expand" title="Show self video"></i></a>
                 </div>
             </div>
         </div>
     </div>
 </div>
 
+<audio id="rigning" style="display :none" loop>
+    <source src="~/media/ringing .mp3" type="audio/mpeg">
+</audio>
+
+
 @Section scripts
     <script src="~/Scripts/opentok.min.js" type="text/javascript" charset="utf-8"></script>
-    <script src="@Url.Content("~/Scripts/opentok2.2.js")" type="text/javascript" charset="utf-8"></script>
+    <script src="@Url.Content("~/Scripts/mobiletalk.js")" type="text/javascript" charset="utf-8"></script>
     <script src="~/Scripts/jquery.signalR-2.2.0.min.js"></script>
     <script src="~/signalr/hubs"></script>
 
@@ -190,22 +211,22 @@ End Code
             var b = parseInt(a.length);
 
             if (b == 1) {
-                a.css({ "width": "100%", "height": "80vh" });
+                a.css({ "width": "100%", "height": "100vh" });
                 $('#subscribers').css({ "width": "100%", "top": "0px", "left": "0px" });
-                $('#opentok_publisher').css({ "width": "100", "height": "75px" });
-                $('#myCamera').css({ "bottom": "0px", "left": "46%", "width": "108px" });
+                $('#opentok_publisher').css({ "width": "100%", "height": "100%" });
+                $('#myCamera').css({ "bottom": "50px", "right": "10px", "width": "80px", "height":"100px","border":"2px solid white","position":"absolute" });
             }
             else if (b == 2) {
                 a.css({ "width": "49%", "height": "38vh" });
                 $('#subscribers').css({ "width": "50%", "top": "100px", "left": "25%" });
                 $('#opentok_publisher').css({ "width": "170", "height": "120px" });
-                $('#myCamera').css({ "bottom": "20px", "left": "43.5%", "width": "178px" });
+                $('#myCamera').css({ "bottom": "20px", "right": "43.5%", "width": "178px" });
             }
             else {
                 a.css({ "width": "32%", "height": "35vh" });
                 $('#subscribers').css({ "width": "80%", "top": "120px", "left": "10%" });
                 $('#opentok_publisher').css({ "width": "100%", "height": "100%" });
-                $('#myCamera').css({ "bottom": "0px", "left": "0px", "width": "100%", "height":"100%", "border":"0px" });
+                $('#myCamera').css({ "bottom": "0px", "right": "0px", "width": "100%", "height": "100%", "border": "0px" });
             }
             setTimeout(countSubscriber, 1000);
         }
@@ -276,14 +297,86 @@ End Code
             rtc.client.getNewOnlineUser = function (user) {
 
                 OnlineUsers.addButton(user);
-                rtc.server.sendMessage("TeleMed", user.Name + " have joined the chat.", "", user.Opentok.SessionId);
+                //rtc.server.sendMessage("TeleMed", user.Name + " have joined the chat.", "", user.Opentok.SessionId);
 
 
             };
             rtc.client.disconnected = function (user) {
                 OnlineUsers.removeButton(user);
-                rtc.server.sendMessage("TeleMed", user.Name + " have disconnected from chat.", "", user.Opentok.SessionId);
+                //rtc.server.sendMessage("TeleMed", user.Name + " have disconnected from chat.", "", user.Opentok.SessionId);
             }
+
+
+            rtc.client.notifybeginCall = function (touser, caller_user) {
+
+                acceptCallBox.show();
+                acceptCallBox.message('Incoming call from ' + caller_user.Name);
+                caller = caller_user;
+                ringing.play();
+            }
+
+            rtc.client.notifyCallend = function (self, caller) {
+
+                if (acceptCallBox.IsVisible()) {
+
+                    acceptCallBox.hide();
+                    ringing.mute();
+
+                }
+                else {
+
+                    btn = document.getElementById("btn_" + caller.ConnectionId);
+
+                    if (btn) {
+                        endCall(btn, "Call " + caller.Name);
+                        Opentok.disconnect()
+                    }
+                }
+            }
+
+            rtc.client.callerConnect = function (thisUser) {
+                Opentok.connect(thisUser.Opentok);
+                user = thisUser;
+            }
+
+
+            rtc.client.notifyCallrejected = function (message, calleruser) {
+                alert(message);
+                var btn = document.getElementById("btn_" + calleruser.ConnectionId);
+                if (btn.value == "")
+                    endCall();
+                ringing.mute();
+
+                Opentok.disconnect()
+            }
+
+            document.getElementById('callAcceptButton').onclick = function () {
+
+                /*_btn = document.getElementById('btn_' + caller.ConnectionId);
+                beginCall(_btn);
+                ringing.mute();
+                acceptCallBox.hide();
+
+                rtc.server.callAcceptedSignal(caller.ConnectionId, 'http://localhost:13624')*/
+
+                _btn = document.getElementById('btn_' + caller.ConnectionId);
+                beginCall(_btn);
+                Opentok.disconnect();
+                Opentok.connect(caller.Opentok);
+                ringing.mute();
+                acceptCallBox.hide();
+                    
+   
+            }
+
+
+            document.getElementById('callRejectButton').onclick = function () {
+                acceptCallBox.hide();
+                ringing.mute();
+
+                rtc.server.callRejectedSignal(caller.ConnectionId);
+            }
+
 
             $(document).ready(function () {
 
@@ -291,6 +384,8 @@ End Code
 
                 $.connection.hub.start().done(function () {
                     var room = document.getElementById('roomName').value;
+
+
 
                     rtc.server.getConnected(name, avatar, 'http://localhost:13624', room).done(function (thisUser) {
                         Opentok.connect(thisUser.Opentok);
@@ -300,10 +395,9 @@ End Code
 
                     $('#chatSendButton').click(function () {
                         // Call the Send method on the hub.
-
+                        var room = document.getElementById('roomName').value;
                         var myAvatar = document.getElementById('myAvatar').getAttribute("src");
-
-                        rtc.server.sendMessage($('#txtName').val(), $('#chatMessage').val(), myAvatar, user.Opentok.SessionId);
+                        rtc.server.sendMessage($('#userFullName').html(), $('#chatMessage').val(), myAvatar, user.Opentok.SessionId, room);
                         // Clear text box and reset focus for next comment.
                         $('#chatMessage').val('').focus();
                     });
@@ -324,6 +418,8 @@ End Code
         })
 
     </script>
+
+
 
 End Section
 

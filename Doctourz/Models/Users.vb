@@ -32,8 +32,17 @@ Namespace opentokRTC.Models
                 m_Avatar = value
             End Set
         End Property
-
         Private m_Avatar As String
+
+        Public Property CurrentRoom() As String
+            Get
+                Return m_CurrentRoom
+            End Get
+            Set(value As String)
+                m_CurrentRoom = value
+            End Set
+        End Property
+        Private m_CurrentRoom As String
 
         Public Property Opentok() As openTok
             Get
@@ -48,7 +57,7 @@ Namespace opentokRTC.Models
             Me.Name = ""
             Me.Avatar = ""
         End Sub
-        Public Sub New(name As String, connectionId As String, opentok As openTok, avatar As String)
+        Public Sub New(name As String, connectionId As String, opentok As openTok, avatar As String, roomName As String)
             Me.Name = name
 
             Me.Avatar = avatar
@@ -56,7 +65,11 @@ Namespace opentokRTC.Models
             Me.ConnectionId = connectionId
 
             Me.Opentok = opentok
+
+            Me.CurrentRoom = roomName
+
         End Sub
     End Class
 
 End Namespace
+

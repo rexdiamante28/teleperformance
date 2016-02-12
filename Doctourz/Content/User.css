@@ -850,7 +850,15 @@ table.dataTable thead .sorting:after {
 #onlineusers{
     position: absolute;
     right:20px;
-    bottom:0px;
+    bottom:15px;
+    z-index:1111;
+}
+
+#r3{
+    position:absolute;
+    font-size:10px !important;
+    top:17px;
+    right:15px;
 }
 #controls #controls-frame i:hover{
     color: #6089B3;

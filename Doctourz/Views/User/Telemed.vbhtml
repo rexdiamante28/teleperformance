@@ -322,8 +322,7 @@ End Code
 
                 if (btn) {
                     endCall(btn, "Call " + caller.Name);
-                    Opentok.disconnect();
-                    Opentok.connect(self.Opentok);
+
 
                 }
 

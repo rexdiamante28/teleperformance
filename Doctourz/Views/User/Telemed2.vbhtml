@@ -21,27 +21,6 @@ End Code
     </div>
 </div>
 
-<!--<div id="bottom-dock" class="bottom-dock-close relative">
-    <div class="bottom-link" id="bottomLink1" onclick="TelemedCoverDecide(this.id); loadPageBottom('appointment')">
-        <label>APPOINTMENTS</label>
-    </div>
-    <div class="bottom-link" id="bottomLink2" onclick="TelemedCoverDecide(this.id); loadPageBottom('PatientRecords')">
-        <label>PATIENT RECORDS</label>
-    </div>
-    <div class="bottom-link" id="bottomLink3" onclick="TelemedCoverDecide(this.id); loadPageBottom('Notes')">
-        <label>NOTES</label>
-    </div>
-    <div class="bottom-link" id="bottomLink4" onclick="TelemedCoverDecide(this.id); loadPageBottom('CareTeam')">
-        <label>CARE TEAM</label>
-    </div>
-    <div class="bottom-link" id="bottomLink5" onclick="TelemedCoverDecide(this.id); loadPageBottom('Diagnosis')">
-        <label>DIAGNOSIS</label>
-    </div>
-    <div style="position: absolute; top:3px; right:3px; width:40px; height:33px; background-color:red;" class="padd-5 point" onclick="TeleDecide()">
-        <i class="fa fa-arrow-up fwhite"></i>
-        <i class="fa fa-arrow-down fwhite"></i>
-    </div>
-</div>-->
 
 <div id="main-frame">
     <div id="video" class="publisherContainer">
@@ -50,7 +29,7 @@ End Code
             <div class="header">
                 <text id="l1" class="fwhite _13 pull-right">INFO &nbsp;<i class="fa fa-file-text-o"></i></text>
                 <i id="l2" class="pull-right fa fa-file-text-o fwhite opener" style="display:none;" onclick="ExpandInfo()"></i>
-                <i id="l3" class="pull-left fa fa-minus fwhite" style="font-size:10px;margin-top:17px;" onclick="CompressInfo()"></i>
+                <i id="l3" class="pull-left fa fa-minus fwhite" style="font-size:10px;margin-top:10px;" onclick="CompressInfo()"></i>
             </div>
 
             <ul class="list-group" id="patient-initial-info">
@@ -93,14 +72,14 @@ End Code
             </div>
             <div id="messaging-controls" class="messaging-controls">
             </div>
-            <div id="chatbox" class="padd-10" style="min-height:68vh;">
+            <div id="chatbox" class="padd-10" style="min-height:60vh;">
 
             </div>
             <div id="message-box" class="list-group-item">
                 <div class="input-group">
                     <textarea type="text" id="chatMessage" style="max-height:53px;" class="form-control" placeholder="Type your message..."></textarea>
                     <span class="input-group-btn">
-                        <button class="btn btn-primary" id="chatSendButton" type="button" style="height:53px; background-color:#0079AC;">Send</button>
+                        <button class="btn btn-primary" id="chatSendButton" type="button" style="height:53px;">Send</button>
                     </span>
                 </div>
             </div>
@@ -120,8 +99,8 @@ End Code
                     <a id="videoControlSlashed" class="no-display" onclick="HideElement(this.id), ShowElement('videoControl')" title="Enable video"><i class="fa fa-eye-slash"></i></a>
                     <a id="audioControl" onclick="HideElement(this.id), ShowElement('audioControlSlashed')"><i class="fa fa-microphone" title="Disable audio"></i></a>
                     <a id="audioControlSlashed" onclick="HideElement(this.id), ShowElement('audioControl')" class="no-display" title="Enable audio"><i class="fa fa-microphone-slash"></i></a>
-                    <a id="recordStart" onclick="HideElement(this.id), ShowElement('recordStop')" class="" title="Start recording"><i class="fa fa-stop"></i></a>
-                    <a id="recordStop" onclick="HideElement(this.id), ShowElement('recordStart')" class="no-display" title="Stop recording"><i class="fa fa-play"></i></a>
+                    <a id="recordStart" style="color:red !important;" onclick="HideElement(this.id), ShowElement('recordStop')" class="fred1" title="Start recording"><i class="fa fa-stop fred1" style="color: red;"></i></a>
+                    <a id="recordStop" style="color:red !important;" onclick="HideElement(this.id), ShowElement('recordStart')" class="no-display fred1" title="Stop recording"><i class="fa fa-play fred1" style="color: red;"></i></a>
                     <a id="selfVideo" onclick="HideElement(this.id), ShowElement('sefVideoHidden'), HideElement('myCamera')" class="" title="Enable audio"><i class="fa fa-compress" title="hide self video"></i></a>
                     <a id="sefVideoHidden" onclick="HideElement(this.id), ShowElement('selfVideo'), ShowElement('myCamera')" class="no-display" title="Enable audio"><i class="fa fa-expand" title="Show self video"></i></a>
                 </div>
@@ -129,6 +108,10 @@ End Code
         </div>
     </div>
 </div>
+
+<audio id="rigning" style="display :none" loop>
+    <source src="~/media/ringing .mp3" type="audio/mpeg">
+</audio>
 
 @Section scripts
     <script src="~/Scripts/opentok.min.js" type="text/javascript" charset="utf-8"></script>
@@ -183,7 +166,7 @@ End Code
             var b = parseInt(a.length);
 
             if (b == 1) {
-                a.css({ "width": "100%", "height": "80vh" });
+                a.css({ "width": "100%", "height": "73vh" });
                 $('#subscribers').css({ "width": "100%", "top": "0px", "left": "0px" });
                 $('#opentok_publisher').css({ "width": "100", "height": "75px" });
                 $('#myCamera').css({ "bottom": "0px", "left": "46%", "width": "108px" });
@@ -266,17 +249,85 @@ End Code
                 });
 
             }
-            rtc.client.getNewOnlineUser = function (user) {
 
+
+            rtc.client.getNewOnlineUser = function (user) {
+                var room = document.getElementById('roomName').value;
                 OnlineUsers.addButton(user);
-                rtc.server.sendMessage("TeleMed", user.Name + " have joined the chat.", "", user.Opentok.SessionId);
+                //server.sendMessage("TeleMed", user.Name + " has joined the chat.", "", user.Opentok.SessionId,room);
 
 
             };
             rtc.client.disconnected = function (user) {
+                var room = document.getElementById('roomName').value;
                 OnlineUsers.removeButton(user);
-                rtc.server.sendMessage("TeleMed", user.Name + " have disconnected from chat.", "", user.Opentok.SessionId);
+                ///rtc.server.sendMessage("TeleMed", user.Name + " has disconnected from chat.", "", user.Opentok.SessionId,room);
             }
+
+            rtc.client.notifybeginCall = function (touser, caller_user) {
+
+                acceptCallBox.show();
+                acceptCallBox.message('Incoming call from ' + caller_user.Name);
+                caller = caller_user;
+                ringing.play();
+            }
+
+
+
+
+            rtc.client.notifyCallend = function (self, caller) {
+
+                if (acceptCallBox.IsVisible()) {
+
+                    acceptCallBox.hide();
+                    ringing.mute();
+
+                }
+                else {
+
+                    btn = document.getElementById("btn_" + caller.ConnectionId);
+
+                    if (btn) {
+                        endCall(btn, "Call " + caller.Name);
+                        Opentok.disconnect();
+                        Opentok.connect(self.Opentok);
+
+                    }
+
+
+                }
+
+            }
+
+            rtc.client.notifyCallrejected = function (message, calleruser) {
+                alert(message);
+                var btn = document.getElementById("btn_" + calleruser.ConnectionId);
+                if (btn.value == "")
+                    endCall();
+                ringing.mute();
+            }
+
+
+            document.getElementById('callAcceptButton').onclick = function () {
+
+                _btn = document.getElementById('btn_' + caller.ConnectionId);
+                beginCall(_btn);
+                Opentok.disconnect();
+                Opentok.connect(caller.Opentok);
+                ringing.mute();
+                acceptCallBox.hide();
+
+
+
+
+            }
+            document.getElementById('callRejectButton').onclick = function () {
+                acceptCallBox.hide();
+                ringing.mute();
+
+                rtc.server.callRejectedSignal(caller.ConnectionId);
+            }
+
 
             $(document).ready(function () {
 
@@ -284,6 +335,8 @@ End Code
 
                 $.connection.hub.start().done(function () {
                     var room = document.getElementById('roomName').value;
+
+
 
                     rtc.server.getConnected(name, avatar, 'http://localhost:13624', room).done(function (thisUser) {
                         Opentok.connect(thisUser.Opentok);
@@ -293,9 +346,9 @@ End Code
 
                     $('#chatSendButton').click(function () {
                         // Call the Send method on the hub.
-
+                        var room = document.getElementById('roomName').value;
                         var myAvatar = document.getElementById('myAvatar').getAttribute("src");
-                        rtc.server.sendMessage($('#userFullName').html(), $('#chatMessage').val(), myAvatar, user.Opentok.SessionId);
+                        rtc.server.sendMessage($('#userFullName').html(), $('#chatMessage').val(), myAvatar, user.Opentok.SessionId, room);
                         // Clear text box and reset focus for next comment.
                         $('#chatMessage').val('').focus();
                     });
@@ -315,7 +368,42 @@ End Code
 
         })
 
+
+        $('#r2').click(function () {
+            $('#r2').css("color", "white");
+        });
+
+        $('#videoControl').click(function () {
+            publisher.publishVideo(false);
+        });
+
+        $('#videoControlSlashed').click(function () {
+            publisher.publishVideo(true);
+        });
+
+        $('#audioControl').click(function () {
+            publisher.publishAudio(false);
+        });
+
+        $('#audioControlSlashed').click(function () {
+            publisher.publishAudio(true);
+        });
+        $('#endCall').click(function () {
+            window.location.reload(false);
+        })
+
     </script>
+
+<script>
+    document.getElementById('topbar2').setAttribute("class", "bggray5");
+
+    var width = window.innerWidth;
+
+    if (width < 768) {
+        window.location = "/User/mobiletelemed?room=room1";
+    }
+
+</script>
 
 End Section
 

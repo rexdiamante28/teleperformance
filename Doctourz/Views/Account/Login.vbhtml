@@ -8,7 +8,7 @@ End Code
     <div class="col-xs-12 padd-30 no-padd text-center top-10">
         <div class="row  bgwhite padd-10">
             <div class="col-xs-12   no-padd bgwhite">
-                <a class="point">@Html.ActionLink(" ", "Index", "Home")<img src="~/Content/Images/Website/logo_blue.png" style="width:250px;" /></a>
+                <a class="point">@Html.ActionLink(" ", "Index", "Home")<img src="~/Content/Images/Website/tplogo.jpg" style="width:250px;" /></a>
             </div>
         </div>
         <div class="row bgwhite padd-20 top-10">

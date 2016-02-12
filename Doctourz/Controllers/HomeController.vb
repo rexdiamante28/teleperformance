@@ -11,7 +11,7 @@ Public Class HomeController
     'Home Page
     Public Function Index() As ActionResult
         If Not Request.IsAuthenticated Then
-            Return View()
+            Return RedirectToAction("Login", "Account")
         End If
 
         Return RedirectToAction("News", "User")

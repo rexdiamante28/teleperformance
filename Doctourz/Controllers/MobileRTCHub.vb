@@ -8,8 +8,8 @@ Imports System.Threading.Tasks
 Imports System.Web
 
 Namespace opentokRTC.Controllers
-    <Hubs.HubName("rTCHub")>
-    Public Class MobileRTCHub
+    <Hubs.HubName("MobileRTCHub")>
+    Public Class RTCHub
         Inherits Hub
 
         Public Shared Users As New ConcurrentDictionary(Of String, User)()
