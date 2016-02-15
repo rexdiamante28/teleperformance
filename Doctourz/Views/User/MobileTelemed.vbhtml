@@ -140,13 +140,19 @@ End Code
                     <input type="number" class="slider" ondrag="TestAlert('sdg')" value="" style="width:50px;margin-top:0px;" data-slider-min="0" data-slider-max="100" data-slider-step="1" data-slider-value="70" data-slider-orientation="horizontal" data-slider-selection="after" data-slider-tooltip="show">
                     <i id="endCall" class="fa fa-phone"></i>
                     <a id="videoControl" onclick="HideElement(this.id), ShowElement('videoControlSlashed')" title="Disable video"><i class="fa fa-video-camera"></i></a>
-                    <a id="videoControlSlashed" class="no-display" onclick="HideElement(this.id), ShowElement('videoControl')" title="Enable video"><i class="fa fa-eye-slash"></i></a>
+                    <a style="z-index:99999;" id="videoControlSlashed" class="no-display" onclick="HideElement(this.id), ShowElement('videoControl')" title="Enable video"><i class="fa fa-eye-slash"></i></a>
                     <a id="audioControl" onclick="HideElement(this.id), ShowElement('audioControlSlashed')"><i class="fa fa-microphone" title="Disable audio"></i></a>
                     <a id="audioControlSlashed" onclick="HideElement(this.id), ShowElement('audioControl')" class="no-display" title="Enable audio"><i class="fa fa-microphone-slash"></i></a>
-                    <a id="recordStart" onclick="HideElement(this.id), ShowElement('recordStop')" class="" title="Start recording"><i class="fa fa-stop fred1"></i></a>
-                    <a id="recordStop" onclick="HideElement(this.id), ShowElement('recordStart')" class="no-display" title="Stop recording"><i class="fa fa-play fred1"></i></a>
+                    <a id="recordStart" onclick="HideElement(this.id), ShowElement('recordStop')" class="" title="Start recording"><i class="fa fa-stop fred1" style="color:red;"></i></a>
+                    <a id="recordStop" onclick="HideElement(this.id), ShowElement('recordStart')" class="no-display" title="Stop recording"><i class="fa fa-play fred1" style="color:red;"></i></a>
                     <a id="selfVideo" style="z-index:3333;" onclick="HideElement(this.id), ShowElement('sefVideoHidden'), HideElement('myCamera')" class="" title="Enable audio"><i class="fa fa-compress" title="hide self video"></i></a>
                     <a id="sefVideoHidden" style="z-index:3333;" onclick="HideElement(this.id), ShowElement('selfVideo'), ShowElement('myCamera')" class="no-display" title="Enable audio"><i class="fa fa-expand" title="Show self video"></i></a>
+                    @If Request.IsAuthenticated Then
+                        @Using Html.BeginForm("LogOff", "Account", FormMethod.Post, New With {.id = "logoutForm"})
+                            @Html.AntiForgeryToken
+                            @<a href="javascript:document.getElementById('logoutForm').submit()" ><i class="fa fa-arrow-left" title="Logout"></i></a>
+                        End Using
+                    End If
                 </div>
             </div>
         </div>
@@ -156,6 +162,8 @@ End Code
 <audio id="rigning" style="display :none" loop>
     <source src="~/media/ringing .mp3" type="audio/mpeg">
 </audio>
+
+
 
 
 @Section scripts
@@ -413,6 +421,29 @@ End Code
                     OnlineUsers.removeAllButtons();
                 });
             });
+
+            $('#r2').click(function () {
+                $('#r2').css("color", "white");
+            });
+
+            $('#videoControl').click(function () {
+                publisher.publishVideo(false);
+            });
+
+            $('#videoControlSlashed').click(function () {
+                publisher.publishVideo(true);
+            });
+
+            $('#audioControl').click(function () {
+                publisher.publishAudio(false);
+            });
+
+            $('#audioControlSlashed').click(function () {
+                publisher.publishAudio(true);
+            });
+            $('#endCall').click(function () {
+                window.location.reload(false);
+            })
 
 
         })
