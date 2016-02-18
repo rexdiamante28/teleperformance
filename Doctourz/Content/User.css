@@ -850,7 +850,6 @@ table.dataTable thead .sorting:after {
 #onlineusers{
     position: absolute;
     right:20px;
-    bottom:15px;
     z-index:1111;
 }
 

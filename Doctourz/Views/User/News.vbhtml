@@ -47,13 +47,3 @@ End Code
 </div>
 
 
-<script>
-    document.getElementById('topbar2').setAttribute("class", "bggray5");
-
-    var width = window.innerWidth;
-
-    if(width<768){
-        window.location = "/User/mobiletelemed?room=room1";
-    }
-
-</script>

@@ -166,7 +166,7 @@ End Code
             var b = parseInt(a.length);
 
             if (b == 1) {
-                a.css({ "width": "100%", "height": "73vh" });
+                a.css({ "width": "100%", "height": "80vh" });
                 $('#subscribers').css({ "width": "100%", "top": "0px", "left": "0px" });
                 $('#opentok_publisher').css({ "width": "100", "height": "75px" });
                 $('#myCamera').css({ "bottom": "0px", "left": "46%", "width": "108px" });

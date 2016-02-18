@@ -147,16 +147,31 @@ End Code
                     <a id="recordStop" onclick="HideElement(this.id), ShowElement('recordStart')" class="no-display" title="Stop recording"><i class="fa fa-play fred1" style="color:red;"></i></a>
                     <a id="selfVideo" style="z-index:3333;" onclick="HideElement(this.id), ShowElement('sefVideoHidden'), HideElement('myCamera')" class="" title="Enable audio"><i class="fa fa-compress" title="hide self video"></i></a>
                     <a id="sefVideoHidden" style="z-index:3333;" onclick="HideElement(this.id), ShowElement('selfVideo'), ShowElement('myCamera')" class="no-display" title="Enable audio"><i class="fa fa-expand" title="Show self video"></i></a>
+                   
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="controls2">
+        <div class="row">
+            <div class="col-xs-12">
+                <div id="controls-frame" class="text-center">
+                    <a href="/user/telemed2?room=room1"><i class="fa fa-video-camera "></i></a>
+                    <a href="#"><i class="fa fa-plus-square " style="color:red;"></i></a>
+                    <a href="#"><i class="fa fa-user-md "></i></a>
+                    <a href="/user/news"><i class="fa fa-newspaper-o "></i></a>
                     @If Request.IsAuthenticated Then
                         @Using Html.BeginForm("LogOff", "Account", FormMethod.Post, New With {.id = "logoutForm"})
                             @Html.AntiForgeryToken
-                            @<a href="javascript:document.getElementById('logoutForm').submit()" ><i class="fa fa-arrow-left" title="Logout"></i></a>
+                            @<a href="javascript:document.getElementById('logoutForm').submit()"><i class="fa fa-arrow-left" title="Logout"></i></a>
                         End Using
                     End If
                 </div>
             </div>
         </div>
     </div>
+
 </div>
 
 <audio id="rigning" style="display :none" loop>
