@@ -17,14 +17,6 @@
 
 End Code
 
-<script>
-    var width = window.innerWidth;
-
-    if (width >= 768) {
-        window.location = "/User/telemed2?room=room1";
-    }
-
-</script>
 
 <input id="txtName" class="hidden" type="text" value="@ViewBag.name" />
 <input id="roomName" class="hidden" type="text" value="@ViewData("Room")" />
@@ -264,6 +256,7 @@ End Code
 
             var rtc = $.connection.rTCHub;
             var name = document.getElementById("txtName").value;
+            $name = $('#txtName').val();
             var avatar = document.getElementById('myAvatar').getAttribute("src");
             var user;
 
@@ -274,6 +267,8 @@ End Code
 
             rtc.client.addNewMessageToPage = function (name, message, senderAvatar) {
 
+
+                alert(name+" "+message+" "+senderAvatar);
                 // Add the message to the page.
 
                 var chat = document.getElementById('chat');
@@ -420,7 +415,7 @@ End Code
                         // Call the Send method on the hub.
                         var room = document.getElementById('roomName').value;
                         var myAvatar = document.getElementById('myAvatar').getAttribute("src");
-                        rtc.server.sendMessage($('#userFullName').html(), $('#chatMessage').val(), myAvatar, user.Opentok.SessionId, room);
+                        rtc.server.sendMessage($('#txtName').val(), $('#chatMessage').val(), myAvatar, user.Opentok.SessionId, room);
                         // Clear text box and reset focus for next comment.
                         $('#chatMessage').val('').focus();
                     });
@@ -465,6 +460,15 @@ End Code
 
     </script>
 
+
+<script>
+    var width = window.innerWidth;
+
+    if (width >= 768) {
+        window.location = "/User/telemed2?room=room1";
+    }
+
+</script>
 
 
 End Section

@@ -763,7 +763,7 @@ table.dataTable thead .sorting:after {
     left:10%;
     top:0px;
     text-align:center;
-    z-index:6666;
+    z-index:666;
 }
 #video{
     min-height:100vh;
@@ -925,11 +925,11 @@ table.dataTable thead .sorting:after {
 
 #acceptCallBox {
             width: 80%;
-            height:20%;
+            height:150px;
             display: none;
             z-index: 2;
             position: absolute;
-            top: 35%;
+            top: 200px;
             left: 10%;
             border: #0042a9 solid 2px;
             background-color: #C7C7C7;
