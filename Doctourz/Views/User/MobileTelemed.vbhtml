@@ -137,7 +137,7 @@ End Code
                     <a id="onlineUsersShown" style="z-index:3333;" onclick="HideElement(this.id), ShowElement('onlineUsersHidden'), ShowElement('onlineusers')" class="" title="Show online users"><i class="fa fa-users" title="Show self video"></i></a>
                     <a id="onlineUsersHidden" onclick="HideElement(this.id), ShowElement('onlineUsersShown'), HideElement('onlineusers')" class="no-display" title="Hide online users"><i class="fa fa-users" title="Show self video" style="color:gray;"></i></a>
                     <i class="fa fa-volume-up" onclick="countSubscriber()" style="margin-right:0px;" title="Adjust volume"></i>
-                    <input type="number" class="slider" ondrag="TestAlert('sdg')" value="" style="width:50px;margin-top:0px;" data-slider-min="0" data-slider-max="100" data-slider-step="1" data-slider-value="70" data-slider-orientation="horizontal" data-slider-selection="after" data-slider-tooltip="show">
+                    <input type="number" class="slider" ondrag="TestAlert('sdg')" value="" style="width:20px;margin-top:0px;" data-slider-min="0" data-slider-max="100" data-slider-step="1" data-slider-value="70" data-slider-orientation="horizontal" data-slider-selection="after" data-slider-tooltip="show">
                     <i id="endCall" class="fa fa-phone"></i>
                     <a id="videoControl" onclick="HideElement(this.id), ShowElement('videoControlSlashed')" title="Disable video"><i class="fa fa-video-camera"></i></a>
                     <a style="z-index:99999;" id="videoControlSlashed" class="no-display" onclick="HideElement(this.id), ShowElement('videoControl')" title="Enable video"><i class="fa fa-eye-slash"></i></a>

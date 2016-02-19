@@ -763,7 +763,7 @@ table.dataTable thead .sorting:after {
     left:10%;
     top:0px;
     text-align:center;
-    z-index:999999;
+    z-index:6666;
 }
 #video{
     min-height:100vh;
@@ -863,7 +863,7 @@ table.dataTable thead .sorting:after {
     margin: 5px 10px 0px 10px;
 }
 #controls #controls-frame i, #onlineusers i{
-    margin-right: 3px;
+    margin-right: 10px;
     font-size: 23px;
     max-width:20px;
     margin-top:10px;
@@ -872,7 +872,7 @@ table.dataTable thead .sorting:after {
 }
 
 #controls2 #controls-frame i, #onlineusers i{
-    margin-right: 3px;
+    margin-right: 10px;
     font-size: 28px;
     max-width:26px;
     margin-top:10px;
@@ -1029,6 +1029,7 @@ table.dataTable thead .sorting:after {
 @media only screen and (max-width : 767px) {
     .navbar li{
         display:inline-block;
+        font-size:10px;
     }
     .chat-open, .info-open{
         width:50%;
