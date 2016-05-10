@@ -218,7 +218,7 @@ End Code
     CompressInfo();
     CompressChat();
 
-    document.getElementById('topbar0').setAttribute("class", "bggray5");
+    //document.getElementById('topbar0').setAttribute("class", "bggray5");
 
     $(function () {
 
@@ -297,11 +297,6 @@ End Code
             acceptCallBox.message('Incoming call from ' + caller_user.Name);
             caller = caller_user;
             ringing.play();
-
-
-
-
-
 
         }
 

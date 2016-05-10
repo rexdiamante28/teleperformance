@@ -36,6 +36,17 @@ Namespace opentokRTC.Models
 
         Private m_Avatar As String
 
+        Public Property DateAndTime() As String
+            Get
+                Return m_DateAndTime
+            End Get
+            Set(value As String)
+                m_DateAndTime = value
+            End Set
+        End Property
+
+        Private m_DateAndTime As String
+
 
         Public Property CurrentRoom() As String
             Get
@@ -46,6 +57,27 @@ Namespace opentokRTC.Models
             End Set
         End Property
         Private m_CurrentRoom As String
+
+        Public Property UserId() As String
+            Get
+                Return m_userId
+            End Get
+            Set(value As String)
+                m_userId = value
+            End Set
+        End Property
+        Private m_userId As String
+
+
+        Public Property level() As String
+            Get
+                Return m_level
+            End Get
+            Set(value As String)
+                m_level = value
+            End Set
+        End Property
+        Private m_level As String
 
 
         Public Property Opentok() As oTok
@@ -61,7 +93,7 @@ Namespace opentokRTC.Models
             Me.Name = ""
             Me.Avatar = ""
         End Sub
-        Public Sub New(name As String, connectionId As String, opentok As oTok, avatar As String, roomName As String)
+        Public Sub New(name As String, connectionId As String, opentok As oTok, avatar As String, roomName As String, dateTime As Date, level As String, userId As String)
             Me.Name = name
 
             Me.Avatar = avatar
@@ -71,6 +103,12 @@ Namespace opentokRTC.Models
             Me.Opentok = opentok
 
             Me.CurrentRoom = roomName
+
+            Me.DateAndTime = dateTime
+
+            Me.level = level
+
+            Me.UserId = userId
         End Sub
     End Class
 

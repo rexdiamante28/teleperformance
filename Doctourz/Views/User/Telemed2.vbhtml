@@ -6,18 +6,40 @@
     Dim appUser As String = User.Identity.GetUserName
     Dim name = db.AppUsers.Where(Function(model) model.userName = appUser).First().name
     Dim avatar = db.AppUsers.Where(Function(model) model.userName = appUser).First().avatar
+    Dim level = db.AppUsers.Where(Function(model) model.userName = appUser).First().level
+    Dim connectionId = db.AppUsers.Where(Function(model) model.userName = appUser).First().userId
+
 
     ViewData("Name") = name
     ViewData("Avatar") = avatar
+    ViewData("level") = level
+    ViewData("connectionId") = connectionId
 
 End Code
 <input id="txtName" type="hidden" value="@ViewData("Name")" />
 <input id="roomName" type="hidden" value="@ViewData("Room")" />
+<input id="level" type="hidden" value="@ViewData("level")" />
+<input id="connectionId" type="hidden" value="@ViewData("connectionId")" />
 
 <div id="acceptCallBox">
     <div id="acceptCallLabel"></div>
     <div class="text-center top-30">
         <input type="button" id="callAcceptButton" class="btn btn-success btn-sm" value="Accept" /> <input type="button" id="callRejectButton" class="btn btn-danger btn-sm" value="Reject" />
+    </div>
+</div>
+
+<div class="messageBox" id="messageBox1">
+    <div id="messageboxMessage"><h4>All doctors are occupied at the moment. Please wait for your turn.</h4><br/>
+            <p>Please maintain connection to keep slot in the queue</p>
+    </div>
+</div>
+
+<div class="messageBox" id="calling">
+    <div class="col-xs-12">
+        <i class="fa fa-remove pull-right point hoverblue1" onclick="hideMessageBox1()"></i>
+    </div>
+    <div id="">
+        <h4>You may now call the doctor when you're ready CLick doctor's avatar at the right bottom part of the screen.</h4><br />
     </div>
 </div>
 
@@ -123,9 +145,17 @@ End Code
 
     <script>
         // This optional function html-encodes messages for display in the page.
+        myConnectionId = '';
+        timeLimit = 0;
+        currentCallee = 0;
         function htmlEncode(value) {
             var encodedValue = $('<div />').text(value).html();
             return encodedValue;
+        }
+
+        function hideMessageBox1() {
+            alert("hahaha");
+            $('#messageBox1').css({ "display": "none" });
         }
 
         function getCaret(el) {
@@ -160,6 +190,65 @@ End Code
             }
         });
 
+        var room = document.getElementById('roomName').value;
+        var level = document.getElementById('level').value
+        if (room != 'room1' && level === 'Patient') {
+            $('#calling').css({ "display": "inline" });
+        }
+
+        function reRoute() {
+            var usersInRoom = $('.onlineUserButton');
+
+            var room = document.getElementById('roomName').value;
+            var level = document.getElementById('level').value;
+
+            if (room === 'room1' && level === 'Patient') {
+                $('#messageBox1').css({ "display": "inline" });
+                //alert("attempting to call "+usersInRoom[currentCallee].id);
+            }
+            if (room === 'room1' && usersInRoom.length > 0 && level === 'Administrator') {
+                try {
+                    document.getElementById(usersInRoom[currentCallee].id).click();
+                    Console.log("calling");
+                }
+                catch (err) {
+                }
+                //alert("attempting to call "+usersInRoom[currentCallee].id);
+            }
+            //else if(room!='room1' &&usersInRoom.length>0 && level == 'Patient'){
+               // try {
+                   // document.getElementById(usersInRoom[currentCallee].id).click();
+               // }
+               // catch (err) {
+               // }
+           // }
+            //if the time limit of 15 seconds was reached and the doctor is not in room1, the doctor will redirect to room1 and fetch some caller
+            if (room != 'room1') {
+                if(usersInRoom.length<1){
+                    timeLimit++;
+                    if(timeLimit==5){
+                         window.location = "/User/Telemed2?room=room1";
+                    }
+                }
+            }
+
+            if(level=='Administrator'){
+                //alert(usersInRoom.length + "  " + currentCallee);
+            }
+            currentCallee++;
+            if (usersInRoom.length == 0) {
+                currentCallee = 0;
+            }
+            //If the currentCallee variable is greater than or equal to the length of the usersInRoom variable, reset it to 0 and restart counting
+            if (currentCallee == (usersInRoom.length)) {
+                currentCallee = 0;
+            }
+            setTimeout(reRoute, 3000);
+        }
+
+
+        reRoute();
+
 
         function countSubscriber() {
             var a = $('.callSubscriber');
@@ -191,11 +280,11 @@ End Code
         CompressInfo();
         CompressChat();
 
-        document.getElementById('topbar0').setAttribute("class", "bggray5");
+        //document.getElementById('topbar0').setAttribute("class", "bggray5");
 
 
         $(function () {
-
+            
             var rtc = $.connection.rTCHub;
             var name = document.getElementById("txtName").value;
             var avatar = document.getElementById('myAvatar').getAttribute("src");
@@ -238,15 +327,25 @@ End Code
             }
 
             rtc.client.getOnlineUsers = function (users) {
-
+                var sortedUsers = [];
                 $.each(users, function (key, user) {
                     if (user.Name != $('#txtName').val()) {
-                        OnlineUsers.addButton(user);
+                        sortedUsers.push(user);
                     }
                     else {
                         selfuser = user;
                     }
                 });
+                
+                sortedUsers.sort(function (a, b) {
+                    return a.DateAndTime - b.DateAndTime;
+                });
+
+               
+
+                for (var a = 0; a < sortedUsers.length; a++){
+                    OnlineUsers.addButton(sortedUsers[a]);
+                }
 
             }
 
@@ -265,17 +364,31 @@ End Code
             }
 
             rtc.client.notifybeginCall = function (touser, caller_user) {
+                var room = document.getElementById('roomName').value;
+                if (room == 'room1') {
+                    acceptCallBox.show();
+                    acceptCallBox.message('Incoming call from ' + caller_user.Name);
+                    caller = caller_user;
+                    ringing.play();
 
-                acceptCallBox.show();
-                acceptCallBox.message('Incoming call from ' + caller_user.Name);
-                caller = caller_user;
-                ringing.play();
+                    $('#callRejectButton').click();
+                    Opentok.disconnect();
+                    window.location = "/User/telemed2?room=" + caller_user.UserId;
+                }
+                else {
+                    acceptCallBox.show();
+                    acceptCallBox.message('Incoming call from ' + caller_user.Name);
+                    caller = caller_user;
+                    ringing.play();
+                }
             }
 
 
 
 
             rtc.client.notifyCallend = function (self, caller) {
+
+                //window.location = "/User/telemed2?room=room1";
 
                 if (acceptCallBox.IsVisible()) {
 
@@ -300,11 +413,18 @@ End Code
             }
 
             rtc.client.notifyCallrejected = function (message, calleruser) {
-                alert(message);
-                var btn = document.getElementById("btn_" + calleruser.ConnectionId);
-                if (btn.value == "")
-                    endCall();
-                ringing.mute();
+                var room = document.getElementById('roomName').value;
+                if (room == 'room1') {
+                    var connectionid = document.getElementById('connectionId').value;
+                    Opentok.disconnect();
+                    window.location = "/User/telemed2?room=" + connectionid;
+                }
+                else {
+                    alert(message);
+                    var btn = document.getElementById("btn_" + calleruser.ConnectionId);
+                    if (btn.value == "");
+                    ringing.mute();
+                }
             }
 
 
@@ -317,14 +437,10 @@ End Code
                 ringing.mute();
                 acceptCallBox.hide();
 
-
-
-
             }
             document.getElementById('callRejectButton').onclick = function () {
                 acceptCallBox.hide();
                 ringing.mute();
-
                 rtc.server.callRejectedSignal(caller.ConnectionId);
             }
 
@@ -335,10 +451,10 @@ End Code
 
                 $.connection.hub.start().done(function () {
                     var room = document.getElementById('roomName').value;
+                    var level = document.getElementById('level').value;
+                    var userId = document.getElementById('connectionId').value;
 
-
-
-                    rtc.server.getConnected(name, avatar, 'http://localhost:13624', room).done(function (thisUser) {
+                    rtc.server.getConnected(name, avatar, 'http://localhost:13624', room, level, userId).done(function (thisUser) {
                         Opentok.connect(thisUser.Opentok);
                         user = thisUser;
                     });
@@ -395,7 +511,7 @@ End Code
     </script>
 
 <script>
-    document.getElementById('topbar2').setAttribute("class", "bggray5");
+    //document.getElementById('topbar2').setAttribute("class", "bggray5");
 
     var width = window.innerWidth;
 

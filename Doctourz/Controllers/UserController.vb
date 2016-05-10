@@ -12,6 +12,7 @@ Imports System.Drawing
 Public Class UserController
     Inherits System.Web.Mvc.Controller
 
+
     Public Property doctorList As New List(Of DoctorList)
     Public Property userDoctor As New List(Of DoctorList)
 
@@ -29,6 +30,15 @@ Public Class UserController
 
         Return View()
     End Function
+
+
+    Function ProfileView() As ActionResult
+        ViewData("Message") = "Your user profile page."
+
+        Return View()
+    End Function
+
+
 
     <HttpPost()>
     <ValidateAntiForgeryToken>
@@ -105,22 +115,6 @@ Public Class UserController
         Return View()
     End Function
 
-    <HttpPost()>
-    <ValidateAntiForgeryToken>
-    Function Location(obj As FormCollection) As ActionResult
-        Dim profileLocation As String
-        Dim userId = User.Identity.GetUserId
-        Dim db As New ApplicationDbContext
-
-        If Not String.IsNullOrEmpty(obj("location")) Then
-            profileLocation = obj("location")
-            Dim updateProfile = db.AppUsers.Where(Function(x) x.userId = userId).FirstOrDefault()
-            updateProfile.location = profileLocation
-            db.SaveChanges()
-        End If
-
-        Return RedirectToAction("Topics", "User")
-    End Function
 
     Function Topics() As ActionResult
         ViewData("Message") = "Your user topics page."
@@ -283,7 +277,6 @@ Public Class UserController
                 If item.u IsNot Nothing Then
                     docId = item.u.userId
                     docName = item.u.name
-                    docLocation = item.u.location
                     docGender = item.u.gender
                     docAvatar = item.u.avatar
                 End If
@@ -414,22 +407,7 @@ Public Class UserController
                 .Data = New With {.message = "Successfully Updated!"}
             }
     End Function
-    Function UpdateLocation(usr As AppUsers) As JsonResult
-        usr.userId = User.Identity.GetUserId
-
-        Using db As New ApplicationDbContext
-            If usr.userId IsNot Nothing Then
-                Dim update = db.AppUsers.Where(Function(x) x.userId = usr.userId).First
-                update.location = usr.location
-
-                db.SaveChanges()
-            End If
-        End Using
-
-        Return New JsonResult With {
-                .Data = New With {.message = "Successfully Updated!"}
-            }
-    End Function
+   
     Function UpdateBirthDate(usr As AppUsers) As JsonResult
         usr.userId = User.Identity.GetUserId
 
@@ -447,58 +425,10 @@ Public Class UserController
             }
     End Function
 
-    Function UpdateEthnicity(usr As AppUsers) As JsonResult
-        usr.userId = User.Identity.GetUserId
+   
 
-        Using db As New ApplicationDbContext
-            If usr.userId IsNot Nothing Then
-                Dim update = db.AppUsers.Where(Function(x) x.userId = usr.userId).First
-                update.ethnicityId = usr.ethnicityId
 
-                db.SaveChanges()
-            End If
-        End Using
-
-        Return New JsonResult With {
-                .Data = New With {.message = "Successfully Updated!"}
-            }
-    End Function
-
-    Function UpdateHeight(usr As AppUsers) As JsonResult
-        usr.userId = User.Identity.GetUserId
-
-        Using db As New ApplicationDbContext
-            If usr.userId IsNot Nothing Then
-                Dim update = db.AppUsers.Where(Function(x) x.userId = usr.userId).First
-                update.height = usr.height
-                update.bmi = usr.bmi
-
-                db.SaveChanges()
-            End If
-        End Using
-
-        Return New JsonResult With {
-                .Data = New With {.message = "Successfully Updated!"}
-            }
-    End Function
-
-    Function UpdateWeight(usr As AppUsers) As JsonResult
-        usr.userId = User.Identity.GetUserId
-
-        Using db As New ApplicationDbContext
-            If usr.userId IsNot Nothing Then
-                Dim update = db.AppUsers.Where(Function(x) x.userId = usr.userId).First
-                update.weight = usr.weight
-                update.bmi = usr.bmi
-
-                db.SaveChanges()
-            End If
-        End Using
-
-        Return New JsonResult With {
-                .Data = New With {.message = "Successfully Updated!"}
-            }
-    End Function
+    
     Function getAppUser() As JsonResult
         Dim db As New ApplicationDbContext
         Dim usrId = User.Identity.GetUserId

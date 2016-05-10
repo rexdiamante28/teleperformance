@@ -115,7 +115,8 @@ function streamCreatedHandler(event) {
 var OnlineUsers = {
     addButton: function (user) {
 
-
+        var level = document.getElementById('level').value;
+        var room = document.getElementById('roomName').value;
 
         if (!document.getElementById("btn_" + user.ConnectionId)) {
             var button = document.createElement("input");
@@ -125,9 +126,19 @@ var OnlineUsers = {
 
             button.setAttribute("id", "btn_" + user.ConnectionId);
             button.setAttribute("type", "button");
-            button.setAttribute("class", "onlineUserButton");
+            if(level=='Administrator'){
+                button.setAttribute("class", "onlineUserButton");
+            }
+            else {
+                if(room == 'room1'){
+                    button.setAttribute("class", "onlineUserButton hidden");
+                } else {
+                    button.setAttribute("class", "onlineUserButton");
+                }
+                
+            }
             button.setAttribute("style", theirAvatar);
-            button.setAttribute("title", "Call " + user.Name);
+            button.setAttribute("title", "Call " + user.Name + "  "+user.DateAndTime);
             button.setAttribute("onclick", "begincallsignal(this)");
             buttonContainer.appendChild(button);
 
@@ -154,7 +165,6 @@ var OnlineUsers = {
 
 
 function endCall(obj, label) {
-    console.log(obj.value);
     obj.setAttribute("title", label);
     obj.setAttribute("onclick", "begincallsignal(this)");
 
@@ -168,11 +178,13 @@ function endcallsignal(obj, label) {
 }
 
 function begincallsignal(obj) {
-    var rtc = $.connection.rTCHub;
-    beginCall(obj);
-    var connectionid = obj.id.replace("btn_", "")
-    rtc.server.beginCall(connectionid);
 
+        var rtc = $.connection.rTCHub;
+        beginCall(obj);
+        var connectionid = obj.id.replace("btn_", "");
+        rtc.server.beginCall(connectionid);
+
+   
 }
 
 

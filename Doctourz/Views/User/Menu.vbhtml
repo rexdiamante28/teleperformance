@@ -1,12 +1,21 @@
 ﻿@Imports Microsoft.AspNet.Identity
 @Code
     If (Request.IsAuthenticated) Then
-        Dim userId = User.Identity.GetUserId
-        Dim db = New ApplicationDbContext
-        Dim appUser = db.AppUsers.Where(Function(x) x.userId = userId).First()
-        ViewBag.appUserName = appUser.name
-        ViewBag.appUserEmail = appUser.email
-        ViewBag.avatar = appUser.avatar
+        Try
+            Dim userId = User.Identity.GetUserId
+           
+            System.Web.HttpContext.Current.Session("MyVariable") = userId
+         
+            Dim db = New ApplicationDbContext
+            Dim appUser = db.AppUsers.Where(Function(x) x.userId = userId).First()
+            
+            ViewBag.Level = appUser.level
+            ViewBag.appUserName = appUser.name
+            ViewBag.appUserEmail = appUser.email
+            ViewBag.avatar = appUser.avatar
+        Catch ex As Exception
+            
+        End Try
     End If
 End Code
 
@@ -55,10 +64,15 @@ End Code
             </div>
         </div>
         <ul class="nav" id="side-menu">
-            <li id="sidelink1" onclick="SidebarChildDecide(this.id); loadPage('Notifications')" ><i class="fa fa-bell-o"></i>Notifications</li>
-            <li id="sidelink2" onclick="SidebarChildDecide(this.id); loadPage('HealthProfile');" ><i class="fa fa-user"></i>Employee Profile</li>
-            <li id="sidelink11" onclick="SidebarChildDecide(this.id); loadPage('Dma')" ><i class="fa fa-question-circle"></i>Help and Support</li>
-            <a href="/Question/Main" style="text-decoration:none;color:white"><li id="sidelink12"><i class="fa fa-cog"></i>Settings</li></a>
+
+            
+                <a href="/User/ProfileView" style="text-decoration:none;color:white"><li id="sidelink12"><i class="fa fa-user"></i>Profile</li></a>
+                <a href="/User/telemed2?room=room1" style="text-decoration:none;color:white"><li id="sidelink12"><i class="fa fa-refresh"></i>Call</li></a>
+                <a href="/Question/Main" style="text-decoration:none;color:white"><li id="sidelink12"><i class="fa fa-refresh"></i>Logs</li></a>
+                @If ViewBag.Level.Equals("Administrator") Then
+                    @<a href="/NewUser/users" style="text-decoration:none;color:white"><li id="sidelink12"><i class="fa fa-users"></i>Users</li></a>
+                End If
+
             @If Request.IsAuthenticated Then
                 @Using Html.BeginForm("LogOff", "Account", FormMethod.Post, New With {.id = "logoutForm"})
                     @Html.AntiForgeryToken

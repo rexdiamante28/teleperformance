@@ -5,6 +5,10 @@ Imports Microsoft.Owin.Security.Cookies
 Imports Microsoft.Owin.Security.Google
 Imports Owin
 
+Imports System.Globalization
+Imports System.Security.Claims
+Imports System.Threading.Tasks
+
 Partial Public Class Startup
     ' For more information on configuring authentication, please visit http://go.microsoft.com/fwlink/?LinkId=301864
     Public Sub ConfigureAuth(app As IAppBuilder)
@@ -57,20 +61,13 @@ Partial Public Class Startup
         If db.Roles.Count <= 0 Then
             db.Roles.Add(New Microsoft.AspNet.Identity.EntityFramework.IdentityRole("Doctor"))
             db.Roles.Add(New Microsoft.AspNet.Identity.EntityFramework.IdentityRole("Patient"))
+            db.Roles.Add(New Microsoft.AspNet.Identity.EntityFramework.IdentityRole("Administrator"))
             db.SaveChanges()
 
         End If
-        If db.Ethnicities.Count <= 0 Then
-            db.Ethnicities.Add(New Ethnicities With {.name = "White or Caucasian"})
-            db.Ethnicities.Add(New Ethnicities With {.name = "Black or African American"})
-            db.Ethnicities.Add(New Ethnicities With {.name = "Hispanic or Latin American"})
-            db.Ethnicities.Add(New Ethnicities With {.name = "South Asian"})
-            db.Ethnicities.Add(New Ethnicities With {.name = "East Asian"})
-            db.Ethnicities.Add(New Ethnicities With {.name = "African"})
-            db.Ethnicities.Add(New Ethnicities With {.name = "Native American or Inuit"})
-            db.Ethnicities.Add(New Ethnicities With {.name = "Native Hawaiian or other Pacific Islander"})
 
-            db.SaveChanges()
+        If db.AppUsers.Where(Function(x) x.level = "Adminstrator").Count <= 0 Then
+
         End If
 
     End Sub

@@ -7,10 +7,15 @@ Imports Microsoft.Owin.Security
 Imports Owin
 
 <Authorize>
-Public Class AccountController
+Public Class NewUserController
     Inherits Controller
     Private _signInManager As ApplicationSignInManager
     Private _userManager As ApplicationUserManager
+
+    Function NewUser() As ActionResult
+
+        Return View()
+    End Function
 
     Public Sub New()
     End Sub
@@ -19,6 +24,7 @@ Public Class AccountController
         UserManager = appUserMan
         SignInManager = signInMan
     End Sub
+
 
     Public Property SignInManager() As ApplicationSignInManager
         Get
@@ -45,6 +51,15 @@ Public Class AccountController
         ViewBag.ReturnUrl = returnUrl
         Return View()
     End Function
+
+    Function Users() As ActionResult
+        ViewData("Message") = "Your users list page."
+        Dim db = New ApplicationDbContext
+        Dim model = db.AppUsers
+
+        Return View(model)
+    End Function
+
 
     '
     ' POST: /Account/Login
@@ -120,20 +135,14 @@ Public Class AccountController
 
     '
     ' GET: /Account/Register
-    <AllowAnonymous>
-    Public Function Register() As ActionResult
-        Return View()
-    End Function
 
     '
     ' POST: /Account/Register
     <HttpPost>
     <AllowAnonymous>
     <ValidateAntiForgeryToken>
-    Public Async Function Register(model As RegisterViewModel, regForm As FormCollection) As Task(Of ActionResult)
-        If String.IsNullOrEmpty(regForm("terms")) Then
-            AddErrors(IdentityResult.Failed("Please accept terms and agreement"))
-        End If
+    Public Async Function NewUser(model As RegisterViewModel, regForm As FormCollection) As Task(Of ActionResult)
+       
 
         If ModelState.IsValid Then
             Dim user = New ApplicationUser() With {
@@ -143,51 +152,34 @@ Public Class AccountController
 
             Dim result = Await UserManager.CreateAsync(user, model.Password)
             If result.Succeeded Then
-                Await SignInManager.SignInAsync(user, isPersistent:=False, rememberBrowser:=False)
+                'Await SignInManager.SignInAsync(user, isPersistent:=False, rememberBrowser:=False)
 
 
                 Dim db As New ApplicationDbContext()
 
-                If db.AppUsers.Where(Function(x) x.level = "Adminstrator").Count <= 0 Then
-                    Dim appUser = New AppUsers() With {
-                    .userId = user.Id,
-                    .firstName = model.firstName,
-                    .lastName = model.lastName,
-                    .name = model.firstName + " " + model.lastName,
-                    .email = model.Email,
-                    .birthDate = Date.Now,
-                    .userName = model.userName,
-                    .level = "Administrator"}
+                Dim appUser = New AppUsers() With {
+                .userId = user.Id,
+                .firstName = model.firstName,
+                .lastName = model.lastName,
+                .name = model.firstName + " " + model.lastName,
+                .email = model.Email,
+                .birthDate = Date.Now,
+                .userName = model.userName,
+                .level = "Doctor"}
 
-                    db.AppUsers.Add(appUser)
-                    db.SaveChanges()
+                db.AppUsers.Add(appUser)
+                db.SaveChanges()
 
-                    UserManager.AddToRole(user.Id, "Administrator")
-                Else
-                    Dim appUser = New AppUsers() With {
-                    .userId = user.Id,
-                    .firstName = model.firstName,
-                    .lastName = model.lastName,
-                    .name = model.firstName + " " + model.lastName,
-                    .email = model.Email,
-                    .birthDate = Date.Now,
-                    .userName = model.userName,
-                    .level = "Patient"}
+                UserManager.AddToRole(user.Id, "Doctor")
 
-                    db.AppUsers.Add(appUser)
-                    db.SaveChanges()
+            ' For more information on how to enable account confirmation and password reset please visit http://go.microsoft.com/fwlink/?LinkID=320771
+            ' Send an email with this link
+            ' Dim code = Await UserManager.GenerateEmailConfirmationTokenAsync(user.Id)
+            ' Dim callbackUrl = Url.Action("ConfirmEmail", "Account", New With { .userId = user.Id, .code = code }, protocol := Request.Url.Scheme)
+            ' Await UserManager.SendEmailAsync(user.Id, "Confirm your account", "Please confirm your account by clicking <a href=""" & callbackUrl & """>here</a>")
 
-                    UserManager.AddToRole(user.Id, "Patient")
-                End If
-
-                ' For more information on how to enable account confirmation and password reset please visit http://go.microsoft.com/fwlink/?LinkID=320771
-                ' Send an email with this link
-                ' Dim code = Await UserManager.GenerateEmailConfirmationTokenAsync(user.Id)
-                ' Dim callbackUrl = Url.Action("ConfirmEmail", "Account", New With { .userId = user.Id, .code = code }, protocol := Request.Url.Scheme)
-                ' Await UserManager.SendEmailAsync(user.Id, "Confirm your account", "Please confirm your account by clicking <a href=""" & callbackUrl & """>here</a>")
-
-                Return RedirectToAction("Name", "User")
-            End If
+                Return RedirectToAction("Users", "NewUser")
+        End If
             AddErrors(result)
         End If
 

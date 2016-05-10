@@ -34,7 +34,7 @@ Namespace opentokRTC.Controllers
 
         End Sub
 
-        Public Function GetConnected(username As String, avatar As String, Remote_Address As String, roomName As String) As User
+        Public Function GetConnected(username As String, avatar As String, Remote_Address As String, roomName As String, level As String, userId As String) As User
             If roomName <> "" Then
                 Dim sessionId As String = ""
                 For Each r In OnlineRooms
@@ -46,8 +46,9 @@ Namespace opentokRTC.Controllers
                 Dim user As User
                 connections.Add(Context.ConnectionId)
                 Dim ot = New oTok(Remote_Address, sessionId)
+                Dim currentDateTime As Date = Now
 
-                user = New User(username, Context.ConnectionId, ot, avatar, roomName)
+                user = New User(username, Context.ConnectionId, ot, avatar, roomName, currentDateTime, level, userId)
 
                 If sessionId = "" Then
                     Dim room As Rooms
@@ -68,6 +69,7 @@ Namespace opentokRTC.Controllers
                 '    End If
                 'Next
 
+                'Shows online users between users in the same room only
                 For Each u In Users
                     If u.Value.CurrentRoom = roomName Then
                         If Not u.Value.ConnectionId = user.ConnectionId Then
@@ -77,7 +79,17 @@ Namespace opentokRTC.Controllers
                     End If
                 Next
 
+                'shows online users whataver room they are in
+                'For Each u In Users
+                '    If Not u.Value.ConnectionId = user.ConnectionId Then
+                '        onlineUsers.TryAdd(u.Key, u.Value)
+                '        onlineConnections.Add(u.Value.ConnectionId)
+                '    End If
+                'Next
+
                 Users.TryAdd(Context.ConnectionId, user)
+                'sort the Users by datetime ascending
+
                 Clients.Clients(onlineConnections).getNewOnlineUser(user)
                 Clients.Client(Context.ConnectionId).getOnlineUsers(onlineUsers)
 

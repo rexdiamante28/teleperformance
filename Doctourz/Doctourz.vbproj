@@ -212,6 +212,7 @@
     <Compile Include="App_Start\IdentityConfig.vb" />
     <Compile Include="App_Start\RouteConfig.vb" />
     <Compile Include="App_Start\Startup.Auth.vb" />
+    <Compile Include="Controllers\NewUserController.vb" />
     <Compile Include="Controllers\AccountController.vb" />
     <Compile Include="Controllers\ManageController.vb" />
     <Compile Include="Controllers\MobileRTCHub.vb" />
@@ -402,6 +403,7 @@
       <LastGenOutput>Application.Designer.vb</LastGenOutput>
     </None>
     <None Include="My Project\PublishProfiles\doctourzbeta.pubxml" />
+    <None Include="My Project\PublishProfiles\teleperformance.pubxml" />
     <None Include="My Project\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <CustomToolNamespace>My</CustomToolNamespace>
@@ -490,6 +492,9 @@
     <Content Include="Views\User\Telemed2.vbhtml" />
     <Content Include="Views\User\MobileTelemed.vbhtml" />
     <Content Include="Views\Shared\_Empty.vbhtml" />
+    <Content Include="Views\User\ProfileView.vbhtml" />
+    <Content Include="Views\NewUser\Users.vbhtml" />
+    <Content Include="Views\NewUser\NewUser.vbhtml" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="favicon.ico" />

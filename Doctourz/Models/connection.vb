@@ -8,10 +8,19 @@ Namespace opentokRTC.Models
         Public Shared ConnectionsList As New List(Of String)()
 
         Public Sub Add(ConnectionId As String)
-            ConnectionsList.Add(ConnectionId)
+            Try
+                ConnectionsList.Add(ConnectionId)
+            Catch ex As Exception
+
+            End Try
         End Sub
         Public Sub Remove(ConnectionId As String)
-            ConnectionsList.Remove(ConnectionId)
+            Try
+                ConnectionsList.Remove(ConnectionId)
+            Catch ex As Exception
+
+            End Try
+
         End Sub
 
 

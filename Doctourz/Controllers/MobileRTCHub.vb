@@ -34,7 +34,7 @@ Namespace opentokRTC.Controllers
 
         End Sub
 
-        Public Function GetConnected(username As String, avatar As String, Remote_Address As String, roomName As String) As User
+        Public Function GetConnected(username As String, avatar As String, Remote_Address As String, roomName As String, level As String, userId As String) As User
             If roomName <> "" Then
                 Dim sessionId As String = ""
                 For Each r In OnlineRooms
@@ -47,7 +47,9 @@ Namespace opentokRTC.Controllers
                 connections.Add(Context.ConnectionId)
                 Dim ot = New oTok(Remote_Address, sessionId)
 
-                user = New User(username, Context.ConnectionId, ot, avatar, roomName)
+                Dim currentDateTime As Date
+
+                user = New User(username, Context.ConnectionId, ot, avatar, roomName, currentDateTime, level, userId)
 
                 If sessionId = "" Then
                     Dim room As Rooms
@@ -110,8 +112,6 @@ Namespace opentokRTC.Controllers
 
         Public Sub EndCall(CallerConnectionId As String)
             Try
-
-
                 Dim caller As New User()
                 Dim self As New User()
                 If Users.ContainsKey(Context.ConnectionId) Then

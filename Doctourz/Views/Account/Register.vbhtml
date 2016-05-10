@@ -43,12 +43,6 @@ End Code
                             @Html.PasswordFor(Function(model) model.ConfirmPassword, New With {.class = "form-control", .placeholder = "Confirm Password"})
                         </div>
                         @<div class="form-group">
-                            As a Patient:<input type="radio" name="Role" value="Patient" checked="checked" />
-                        </div>
-                        @<div class="form-group">
-                            As a Doctor :<input type="radio" name="Role" value="Doctor" />
-                        </div>
-                        @<div class="form-group">
                             <label class="point"><input type="checkbox" id="agree" name="terms" value="1"> I agree to <a>Terms and Conditions</a></label>
                         </div>
                         @<div class="form-group">
